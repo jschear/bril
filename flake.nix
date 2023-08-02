@@ -31,18 +31,19 @@
 
           shellHook = ''
             # Install deno tools within .deno/ directory.
-            mkdir -p .deno/
-            export DENO_INSTALL_ROOT=.deno/
+            mkdir -p .deno
+            export DENO_INSTALL_ROOT=$(pwd)/.deno
             export PATH="$PATH:$DENO_INSTALL_ROOT/bin"
 
-            deno install brili.ts
+            deno install brili.ts brilck.ts
+            deno install --allow-env --allow-read ts2bril.ts
 
             # Create and activate python virtual environment, and install bril-txt tools.
             python -m venv .venv
             source .venv/bin/activate
+            python -m pip install flit turnt
 
             cd bril-txt/
-            python -m pip install flit
             flit install --symlink .
             cd -
           '';
